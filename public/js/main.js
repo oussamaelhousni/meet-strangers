@@ -1,6 +1,15 @@
+import * as store from './store.js'
+import * as wws from './wss.js'
+
 const socket = io("/");
 
-socket.on("connect", () => {
-  console.log("succesfully connected to socket.io server");
-  console.log(socket.id);
-});
+// register the socket connection
+wws.registerSocketEvents(socket)
+
+
+// copy personalCode to clipBoard functionality
+const copyPersonalCodeBtn = document.getElementById("personal_code_copy_button")
+copyPersonalCodeBtn.addEventListener("click",()=>{
+  const personalCode = store.getState().socketId
+  navigator.clipboard && navigator.clipboard.writeText(personalCode)
+})
