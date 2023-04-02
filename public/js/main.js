@@ -4,6 +4,7 @@ import * as wws from "./wss.js";
 import * as webRTCHandler from "./webRTCHandler.js";
 const socket = io("/");
 
+webRTCHandler.getLocalPreview();
 // register the socket connection
 wws.registerSocketEvents(socket);
 

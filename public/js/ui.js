@@ -141,3 +141,17 @@ const showElement = (element) => {
         element.classList.remove("display_none");
     }
 };
+
+export const updateLocalVideo = (stream) => {
+    const localVideo = document.getElementById("local_video");
+    localVideo.srcObject = stream;
+    localVideo.addEventListener("loadedmetadata", () => {
+        localVideo.play();
+    });
+};
+
+export const updateRemoteVideo = (stream) => {
+    console.log("remote video called", stream);
+    const remoteVideo = document.getElementById("remote_video");
+    remoteVideo.srcObject = stream;
+};

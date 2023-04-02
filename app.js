@@ -57,6 +57,17 @@ io.on("connection", (socket) => {
         }
     });
 
+    socket.on("webRTC-signaling", (data) => {
+        console.log("web rtc signlaing came");
+        const { connectedUserSocketId } = data;
+        const connectedPeer = connectedPeers.find(
+            (socketId) => socketId === connectedUserSocketId
+        );
+        if (connectedPeer) {
+            console.log("inside the f from webrtc");
+            io.to(connectedPeer).emit("webRTC-signaling", data);
+        }
+    });
     // if the connection is failed we remove the user from the connected users
     socket.on("disconnect", () => {
         console.log(`user with id == ${socket.id} disconnected`);

@@ -1,6 +1,7 @@
 import * as store from "./store.js";
 import * as ui from "./ui.js";
 import * as webRTCHandler from "./webRTCHandler.js";
+import * as constants from "./constants.js";
 let socketIO = null;
 
 export const registerSocketEvents = (socket) => {
@@ -24,6 +25,27 @@ export const registerSocketEvents = (socket) => {
         console.log("anser comme", data);
         webRTCHandler.handlePreOfferAnswer(data);
     });
+
+    socket.on("webRTC-signaling", (data) => {
+        console.log("offer asat", data);
+        switch (data.type) {
+            case constants.webRTCSignaling.OFFER: {
+                webRTCHandler.handleWebRTCOffer(data);
+                break;
+            }
+            case constants.webRTCSignaling.ANSWER: {
+                webRTCHandler.handleWebRTCAnswer(data);
+                break;
+            }
+            case constants.webRTCSignaling.ICE_CANDIDATE: {
+                webRTCHandler.handlewebRTCCandidate(data);
+                break;
+            }
+            default:
+                console.log("in default a sat", data);
+                return;
+        }
+    });
 };
 
 export const sendPreOffer = (data) => {
@@ -34,4 +56,6 @@ export const sendPreOfferAnswer = (data) => {
     socketIO.emit("pre-offer-answer", data);
 };
 
-export const handlePreOfferAnswer = () => {};
+export const sendDataUsingWebRTCSignaling = (data) => {
+    socketIO.emit("webRTC-signaling", data);
+};
